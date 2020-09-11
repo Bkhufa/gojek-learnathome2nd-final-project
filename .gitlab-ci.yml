@@ -8,6 +8,8 @@ build_app:
     stage: build
     script:
         # - npm install -g
+        - node -v
+        - npm -v
         - npm run build
     artifacts:
         paths:
