@@ -7,7 +7,7 @@ stages:
 build_app:
     stage: build
     script:
-        - npm install -g
+        # - npm install -g
         - npm run build
     artifacts:
         paths:
