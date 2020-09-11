@@ -1,0 +1,28 @@
+image:  "node:latest"
+
+stages:
+    - build
+    - deploy
+
+build_app:
+    stage: build
+    script:
+        - npm install -g
+        - npm run build
+    artifacts:
+        paths:
+            - build
+        expire_in: 1 day
+
+deploy_draft:
+    stage: deploy
+    script:
+        - npm install -g netlify-cli
+        - netlify deploy --site ${NETLIFY_SITE_ID} bd7889e6-bb35-4aca-a240-6cd3ecc86e33  --auth ${NETLIFY_TOKEN} cbzxeoZDiH-gzlUWbnaLl3DNKczeX1KS9ww-JrIj8U0 --dir build
+
+deploy_prod:
+    stage: deploy
+    script:
+        - npm install -g netlify-cli
+        - netlify deploy --site ${NETLIFY_SITE_ID} bd7889e6-bb35-4aca-a240-6cd3ecc86e33  --auth ${NETLIFY_TOKEN} cbzxeoZDiH-gzlUWbnaLl3DNKczeX1KS9ww-JrIj8U0 --dir build --deploy_prod
+    when: manual
