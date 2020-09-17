@@ -3,19 +3,6 @@ import axios from 'axios';
 const URL = 'https://developers.zomato.com/api/v2.1/';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-export const fetchFromSearch = (cityQuery) => (
-    axios.get(URL, {
-        params: {
-            q: !cityQuery ? 'Jakarta' : cityQuery,
-            count: 5,
-            start: 2,
-        },
-        headers: {
-            'user-key': API_KEY,
-        }
-    })
-);
-
 export const fetchCity = (cityQuery) => (
     axios.get(URL + '/cities', {
         params: {
@@ -27,7 +14,7 @@ export const fetchCity = (cityQuery) => (
     })
 );
 
-export const fetchFromCity = (cityId) => (
+export const fetchRestaurant = (cityId) => (
     axios.get(URL + '/search', {
         params: {
             entity_id: cityId,
