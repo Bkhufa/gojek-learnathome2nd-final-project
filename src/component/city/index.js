@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchFromCity } from '../../utils/fetch-restaurants'
+import { fetchFromCity, fetchCity } from '../../utils/fetch-restaurants'
 
 const Card = ({ restaurantData: { featured_image, name, cuisines, price_range, user_rating } }) => {
     return (
@@ -33,34 +33,37 @@ const Rating = ({ rating }) => {
     );
 };
 
-// const Main = ({ restaurantCity }) => {
-
-//     console.log("Main Changed");
-//     return (
-//         <div>
-//             {
-//                 restaurantCity?.map(({ restaurant: { name, cuisines, price_range, user_rating } }, idx) => (
-//                     <Card img={'https://via.placeholder.com/300'} name={name} cuisine={cuisines} budget={price_range} rating={Math.floor(user_rating.aggregate_rating)} key={idx} />
-//                 ))
-//             }
-//         </div>
-//     );
-// };
+const CitySuggestion = ({ data: { id, name } }) => {
+    return (
+        <div>
+            <span>{name}</span>
+            <span>{id}</span>
+        </div>
+    )
+}
 
 const App = () => {
     const [cityQuery, setCityQuery] = useState('Jakarta');
+    const [cityList, setCityList] = useState([{
+        cityId: 74,
+        cityName: 'Jakarta'
+    }]);
+    // const [cityList, setCityList] = useState([{}]);
     const [appState, setAppState] = useState({
         loading: false,
         restaurants: null,
     });
-    console.log(appState.restaurants);
+    // console.log(appState.restaurants);
 
-    useEffect((cityQuery) => {
+    useEffect(() => {
         setAppState({ loading: true });
-        fetchFromCity(cityQuery).then(({ data }) => {
+
+        fetchFromCity(cityList[0].cityId).then(({ data }) => {
             setAppState({ loading: false, restaurants: data.restaurants })
         });
     }, [setAppState]);
+
+
 
     return (
         <>
@@ -69,13 +72,31 @@ const App = () => {
                 <input type='search' placeholder='Search City' value={cityQuery}
                     onChange={({ target: { value } }) => {
                         setCityQuery(value);
+                        fetchCity(cityQuery).then(({ data: { location_suggestions } }) => {
+                            console.log("suggestion", location_suggestions);
+                            setCityList(location_suggestions);
+                        });
                     }}
                 />
                 <button onClick={() => {
-                    fetchFromCity(cityQuery).then(({ data }) => {
+                    fetchFromCity(cityList[0].id).then(({ data }) => {
                         setAppState({ loading: false, restaurants: data.restaurants });
+                        console.log(cityList);
                     });
                 }}>Change City</button>
+
+                {
+                    // console.log("cityList", cityList)
+                    cityList.map((data, idx) => (
+                        <CitySuggestion data={data} key={idx} onClick={() => {
+                            console.log('clicked');
+                            fetchFromCity(data.cityId).then(({ data }) => {
+                                setAppState({ loading: false, restaurants: data.restaurants });
+                            });
+                        }}/>
+                    ))
+                }
+
             </header>
 
             <main>
