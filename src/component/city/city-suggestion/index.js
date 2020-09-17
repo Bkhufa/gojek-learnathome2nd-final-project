@@ -1,5 +1,6 @@
 import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 const CitySuggestion = ({ cityData, onClickHandler }) => {
@@ -7,8 +8,10 @@ const CitySuggestion = ({ cityData, onClickHandler }) => {
     return (
         <>
             <ListItem button onClick={() => onClickHandler(id)}>
-                <span>{name}</span>
-                <span>{id}</span>
+                <ListItemText
+                    primary={name}
+                    secondary={'City Id: ' + id}
+                />
             </ListItem>
             <Divider />
         </>

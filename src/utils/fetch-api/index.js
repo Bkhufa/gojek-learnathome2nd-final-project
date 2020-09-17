@@ -19,8 +19,6 @@ export const fetchRestaurant = (cityId) => (
         params: {
             entity_id: cityId,
             entity_type: 'city',
-            count: 5,
-            start: 0,
         },
         headers: {
             'user-key': API_KEY,
