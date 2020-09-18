@@ -27,10 +27,26 @@ const RestaurantCard = ({ restaurantData }) => {
                     <CardContent>
                         <h3 className={styles.header}>{name}</h3>
                         <div>
-                            <Chip className={styles.chip} color='primary' label={cuisines} clickable />
+                            {
+                                cuisines ?
+                                    <Chip className={styles.chip} color="secondary" label={cuisines} clickable />
+                                    :
+                                    <div></div>
+                                }
+
                             <div>
-                                <Budget className={styles.chip} budget={price_range} />
-                                <Rating className={styles.chip} rating={user_rating.aggregate_rating} />
+                                {
+                                    price_range ?
+                                    <Budget className={styles.chip} budget={price_range} />
+                                    :
+                                    <div></div>
+                                }
+                                {
+                                    user_rating.aggregate_rating ?
+                                    <Rating className={styles.chip} rating={user_rating.aggregate_rating} />
+                                    :
+                                    <div></div>
+                                }
                             </div>
                         </div>
                     </CardContent>

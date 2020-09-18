@@ -4,7 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 const SearchButton = ({ cityList, onclickHandler }) => (
     <IconButton
-        color="primary"
+        // color="primary"
         size="medium"
         onClick={() => {
             if (cityList.length > 0) {
