@@ -1,11 +1,16 @@
 import React from 'react';
+import Chip from '@material-ui/core/Chip';
 
-const Budget = ({ budget }) => {
+const Budget = ({ budget, className }) => {
     const budgets = [...Array(budget)];
     return (
-        budgets.map((_, idx) => (
-            <span key={idx}>$</span>
-        ))
+        <Chip
+            className={className}
+            label={budgets.map((_, idx) => (
+                <span key={idx}>$</span>
+            ))}
+        />
+
     );
 };
 

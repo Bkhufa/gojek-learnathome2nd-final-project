@@ -1,0 +1,36 @@
+.header {
+    padding: 14em 0 5em;
+    color: #fff !important;
+    background: url(https://i.gojekapi.com/darkroom/gofood-id/v2/images/uploads/e5070ade-5908-44ab-a004-121594e736d8_hero.jpg?w=1536), radial-gradient(#666, rgb(173, 173, 173));
+    background-blend-mode: multiply;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.backgroundWhite {
+    background-color: #fff;
+}
+
+.textBlack {
+    color: #333;
+}
+
+.positionRelative {
+    position: relative;
+}
+
+.citySuggestion {
+    position: absolute;
+    color: #333;
+    background-color: #fff;
+    width: 96%;
+    z-index: 99;
+    margin: 2px;
+}
+

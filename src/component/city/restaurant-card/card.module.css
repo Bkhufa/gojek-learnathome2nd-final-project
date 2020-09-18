@@ -1,0 +1,23 @@
+.card {
+    max-width: 345px;
+}
+
+.card:hover {
+    transform: translateY(-0.3rem);
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+.media {
+    height: 200px;
+}
+
+.header {
+    margin: 0.5rem 0;
+    min-height: 2.5rem
+}
+
+.chip {
+    margin: 0.4rem 0.4rem 0 0;
+    max-width: 100%;
+}
