@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchRestaurant, fetchCity } from '../../utils/api';
+import { getRestaurant, getCity } from '../../utils/api';
 import { parseCitySuggestions, parseSearchRestaurants } from '../../utils/parser';
 import { debounce } from '../../utils/debounce';
 
@@ -35,7 +35,7 @@ const Main = () => {
 
     const restaurantStateHandle = (cityId) => {
         setAppState({ loading: true })
-        fetchRestaurant(cityId).then(({ data }) => {
+        getRestaurant(cityId).then(({ data }) => {
             const restaurants = parseSearchRestaurants(data);
             setAppState({ loading: false, restaurants: restaurants });
             setCityQuery(restaurants[0].city);
@@ -44,7 +44,7 @@ const Main = () => {
     };
 
     const cityStateHandle = debounce((cityQuery) => {
-        fetchCity(cityQuery).then(({ data }) => {
+        getCity(cityQuery).then(({ data }) => {
             const cityList = parseCitySuggestions(data);
             setCitySuggestion(cityList);
         });
