@@ -3,11 +3,13 @@ import { fetchRestaurant, fetchCity } from '../../utils/api';
 import { parseCitySuggestions, parseSearchRestaurants } from '../../utils/parser';
 import { debounce } from '../../utils/debounce';
 
+// Importing Components
 import RestaurantCard from './restaurant-card';
 import CitySuggestion from './city-suggestion';
 import SearchButton from './search-button';
 import styles from './styles.module.css';
 
+// Importing UI Library
 import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -18,17 +20,18 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Main = () => {
+    const [collapsibleState, setCollapsible] = useState(false)
+    const [error, setError] = useState()
     const [cityQuery, setCityQuery] = useState('Jakarta');
+
     const [citySuggestion, setCitySuggestion] = useState([{
         id: 74,
-        name: cityQuery
+        name: 'Jakarta'
     }]);
     const [appState, setAppState] = useState({
         loading: false,
         restaurants: null,
     });
-    const [collapsibleState, setCollapsible] = useState(false)
-    const [error, setError] = useState()
 
     const restaurantStateHandle = (cityId) => {
         setAppState({ loading: true })
@@ -45,11 +48,11 @@ const Main = () => {
             const cityList = parseCitySuggestions(data);
             setCitySuggestion(cityList);
         });
+        setCollapsible(true);
     }, 500);
 
     useEffect(() => {
         setAppState({ loading: true });
-
         const searchRestaurantsFromCity = () => {
             try {
                 restaurantStateHandle(74);
@@ -57,7 +60,6 @@ const Main = () => {
                 setError(error.message);
             }
         };
-
         searchRestaurantsFromCity();
     }, []);
 
@@ -75,8 +77,7 @@ const Main = () => {
                         className={styles.backgroundWhite}
                         onChange={({ target: { value } }) => {
                             setCityQuery(value);
-                            cityStateHandle(cityQuery);
-                            setCollapsible(true);
+                            cityStateHandle(value);
                         }}
                         endAdornment={
                             <InputAdornment position="end">
@@ -105,9 +106,8 @@ const Main = () => {
             <Container maxWidth="lg" >
                 <main>
                     {error && <div className={styles.textCenter}>Error: {error}</div>}
-                    {/* <h2 className={styles.textCenter}>Displaying restaurants in {appState.restaurants && appState.restaurants[0].restaurant.location.city}</h2> */}
                     <h2 className={styles.textCenter}>Displaying restaurants in {appState.restaurants && appState.restaurants[0].city}</h2>
-                    <Grid alignItems="center" justify="center" container spacing={3}>
+                    <Grid alignItems="center" justify="center" container spacing={4}>
                         {
                             appState.loading === true ?
                                 <Grid item xs={12} className={styles.textCenter}>
