@@ -17,21 +17,3 @@ export const parseSearchRestaurants = data =>
     } = e.restaurant;
     return { id, name, picture, cuisines, priceRange, rating, city };
   });
-
-// OLD
-
-// const restaurantStateHandle = (cityId) => {
-//   setAppState({ loading: true })
-//   fetchRestaurant(cityId).then(({ data }) => {
-//       setAppState({ loading: false, restaurants: data.restaurants });
-//       setCollapsible(false);
-//       setCityQuery(data.restaurants[0].restaurant.location.city);
-//   });
-//   console.log(appState.restaurants);
-// };
-
-// const cityStateHandle = debounce((cityQuery) => {
-//   fetchCity(cityQuery).then(({ data: { location_suggestions } }) => {
-//       setCitySuggestion(location_suggestions);
-//   });
-// }, 500);

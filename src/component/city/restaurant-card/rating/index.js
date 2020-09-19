@@ -15,13 +15,18 @@ const Rating = ({ rating, className }) => {
 
     return (
         <>
-            <Chip 
-                icon={<span className={styles.ratingAvatar}>{rating}</span>}
-                variant="outlined"
-                color="secondary"
-                className={className}
-                label={ratingStar()} 
-            />
+            {
+                rating ?
+                    <Chip 
+                        icon={<span className={styles.ratingAvatar}>{rating}</span>}
+                        variant="outlined"
+                        color="secondary"
+                        className={className}
+                        label={ratingStar()} 
+                    />
+                    :
+                <div></div>
+            }
         </>
     );
 };
