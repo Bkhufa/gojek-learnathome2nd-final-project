@@ -14,8 +14,15 @@
     background-size: cover;
 }
 
+.headerText {
+    font-size: 4em;
+    text-align: center;
+    margin: 3rem auto 2rem;
+}
+
 .textCenter {
     text-align: center;
+    margin: 3rem auto 2rem;
 }
 
 .backgroundWhite {
@@ -34,7 +41,7 @@
     position: absolute;
     color: #333;
     background-color: #fff;
-    width: 96%;
+    min-width: 94.6%;
     z-index: 99;
     margin: 2px;
 }

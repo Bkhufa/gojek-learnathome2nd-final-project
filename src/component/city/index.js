@@ -1,56 +1,72 @@
 import React, { useEffect, useState } from 'react';
-import { fetchRestaurant, fetchCity } from '../../utils/fetch-api';
+import { fetchRestaurant, fetchCity } from '../../utils/api';
+import { parseCitySuggestions, parseSearchRestaurants } from '../../utils/parser';
+import { debounce } from '../../utils/debounce';
+
 import RestaurantCard from './restaurant-card';
 import CitySuggestion from './city-suggestion';
 import SearchButton from './search-button';
 import styles from './styles.module.css';
 
-import { Container, InputAdornment, OutlinedInput, List, ListItem, Collapse, Grid, CircularProgress } from '@material-ui/core';
-// import Container from '@material-ui/core/Container';
-// import InputAdornment from '@material-ui/core/InputAdornment';
-// import OutlinedInput from '@material-ui/core/OutlinedInput';
-// import List from '@material-ui/core/List';
-// import ListItem from '@material-ui/core/ListItem';
-// import Collapse from '@material-ui/core/Collapse';
-// import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Main = () => {
     const [cityQuery, setCityQuery] = useState('Jakarta');
-    const [cityList, setCityList] = useState([{
+    const [citySuggestion, setCitySuggestion] = useState([{
         id: 74,
-        name: 'Jakarta'
+        name: cityQuery
     }]);
     const [appState, setAppState] = useState({
         loading: false,
         restaurants: null,
     });
     const [collapsibleState, setCollapsible] = useState(false)
+    const [error, setError] = useState()
 
     const restaurantStateHandle = (cityId) => {
-        setAppState({ loading:true })
+        setAppState({ loading: true })
         fetchRestaurant(cityId).then(({ data }) => {
-            setAppState({ loading: false, restaurants: data.restaurants });
-            setCollapsible(false);
-            setCityQuery(data.restaurants[0].restaurant.location.city);
+            const restaurants = parseSearchRestaurants(data);
+            setAppState({ loading: false, restaurants: restaurants });
+            setCityQuery(restaurants[0].city);
         });
+        setCollapsible(false);
     };
 
-    const cityStateHandle = (cityQuery) => {
-        fetchCity(cityQuery).then(({ data: { location_suggestions } }) => {
-            setCityList(location_suggestions);
+    const cityStateHandle = debounce((cityQuery) => {
+        fetchCity(cityQuery).then(({ data }) => {
+            const cityList = parseCitySuggestions(data);
+            setCitySuggestion(cityList);
         });
-    };
+    }, 500);
 
     useEffect(() => {
         setAppState({ loading: true });
-        restaurantStateHandle(cityList[0].id);
+
+        const searchRestaurantsFromCity = () => {
+            try {
+                restaurantStateHandle(74);
+            } catch (error) {
+                setError(error.message);
+                //   console.error(error.message);
+            }
+        };
+
+        searchRestaurantsFromCity();
     }, []);
 
     return (
-        <div onClick={() => {setCollapsible(false)}}>
+        <div onClick={() => { setCollapsible(false) }}>
             <header className={styles.header}>
-                <h1 className={styles.textCenter}>Go Zomato</h1>
-                <Container maxWidth="lg" className={styles.positionRelative}>
+                <h1 className={styles.headerText}>Go Zomato</h1>
+                <Container maxWidth="md" className={styles.positionRelative}>
                     <OutlinedInput
                         value={cityQuery}
                         fullWidth
@@ -65,7 +81,7 @@ const Main = () => {
                         }}
                         endAdornment={
                             <InputAdornment position="end">
-                                <SearchButton cityList={cityList} onclickHandler={restaurantStateHandle} />
+                                <SearchButton citySuggestion={citySuggestion} onclickHandler={restaurantStateHandle} />
                             </InputAdornment>
                         }
                     />
@@ -75,11 +91,11 @@ const Main = () => {
                         in={collapsibleState}
                     >
                         <List>
-                            {cityList.length === 0 ?
+                            {citySuggestion.length === 0 ?
                                 <ListItem className={styles.textBlack}>City Not Found</ListItem>
                                 :
-                                cityList.map((cities, idx) => (
-                                    <CitySuggestion cityData={cities} key={idx} onClickHandler={restaurantStateHandle} />
+                                citySuggestion.map((data, idx) => (
+                                    <CitySuggestion cityData={data} key={idx} onClickHandler={restaurantStateHandle} />
                                 ))
                             }
                         </List>
@@ -87,10 +103,12 @@ const Main = () => {
                 </Container>
             </header>
 
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" >
                 <main>
-                    <h2 className={styles.textCenter}>Displaying restaurants in {appState.restaurants ? appState.restaurants[0].restaurant.location.city : cityQuery}</h2>
-                    <Grid alignContent='center' container spacing={3}>
+                    {error && <div className={styles.textCenter}>Error: {error}</div>}
+                    {/* <h2 className={styles.textCenter}>Displaying restaurants in {appState.restaurants && appState.restaurants[0].restaurant.location.city}</h2> */}
+                    <h2 className={styles.textCenter}>Displaying restaurants in {appState.restaurants && appState.restaurants[0].city}</h2>
+                    <Grid alignItems="center" justify="center" container spacing={3}>
                         {
                             appState.loading === true ?
                                 <Grid item xs={12} className={styles.textCenter}>
@@ -104,8 +122,8 @@ const Main = () => {
                                     <Grid item xs={12} className={styles.textCenter}>Restaurants not found</Grid>
                                     :
                                     (
-                                        appState.restaurants?.map(({ restaurant }, idx) => (
-                                            <RestaurantCard restaurantData={restaurant} key={idx} />
+                                        appState.restaurants?.map((data, idx) => (
+                                            <RestaurantCard restaurantData={data} key={idx} />
                                         ))
                                     )
                         }

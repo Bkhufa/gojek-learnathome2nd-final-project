@@ -2,13 +2,13 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
-const SearchButton = ({ cityList, onclickHandler }) => (
+const SearchButton = ({ citySuggestion, onclickHandler }) => (
     <IconButton
         // color="primary"
         size="medium"
         onClick={() => {
-            if (cityList.length > 0) {
-                onclickHandler(cityList[0].id);
+            if (citySuggestion.length > 0) {
+                onclickHandler(citySuggestion[0].id);
             }
         }}>
         <SearchIcon />
