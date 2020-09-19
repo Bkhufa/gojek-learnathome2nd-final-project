@@ -9,8 +9,8 @@ Try it yourself on: https://gozomato.netlify.app
 1. User type city search query in the search bar
 2. The app will show you the city suggestion from Zomato City API endpoint. The API is triggered with debounce every 500ms when the user stop writing
 3. User can click the city suggestion or the search button
-  * If the user clicked the search button, the app will automatically search the restaurants in the first city suggestion.
-  * If the user clicked the city suggestion, the app will search the restaurants in that city.
+   * If the user clicked the search button, the app will automatically search the restaurants in the first city suggestion.
+   * If the user clicked the city suggestion, the app will search the restaurants in that city.
 4. After a little bit of loading, all the restaurants are displayed at the lower part of the page.
 
 ## Get Started
