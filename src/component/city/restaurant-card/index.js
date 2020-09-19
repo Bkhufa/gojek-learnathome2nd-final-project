@@ -29,8 +29,8 @@ const RestaurantCard = ({ restaurantData }) => {
                             { cuisines && <Chip className={styles.chip} color="secondary" label={cuisines} clickable /> }
 
                             <div>
-                                { priceRange && <Budget className={styles.chip} budget={priceRange} /> }
                                 { rating && <Rating className={styles.chip} rating={rating} /> }
+                                { priceRange && <Budget className={styles.chip} budget={priceRange} /> }
                             </div>
                         </div>
                     </CardContent>

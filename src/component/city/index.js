@@ -55,7 +55,6 @@ const Main = () => {
                 restaurantStateHandle(74);
             } catch (error) {
                 setError(error.message);
-                //   console.error(error.message);
             }
         };
 

@@ -4,21 +4,24 @@ import Chip from '@material-ui/core/Chip';
 import styles from '../card.module.css'
 
 const Rating = ({ rating, className }) => {
-    const ratings = Math.round(rating);
-    const ratingArr = [...Array(ratings)];
+    const roundedRating = Math.round(rating);
+    const ratingArr = [...Array(roundedRating)];
+
+    const ratingStar = () => (
+        ratingArr.map((_, idx) => (
+            <span key={idx} className={styles.goldenColor}>&#9733;</span>
+        ))
+    );
+
     return (
         <>
             <Chip 
+                icon={<span className={styles.ratingAvatar}>{rating}</span>}
                 variant="outlined"
                 color="secondary"
                 className={className}
-                label={
-                    ratingArr.map((_, idx) => (
-                        <span key={idx} className={styles.goldenColor}>&#9733;</span>
-                    ))
-                } 
+                label={ratingStar()} 
             />
-            {/* <span>{rating}</span> */}
         </>
     );
 };

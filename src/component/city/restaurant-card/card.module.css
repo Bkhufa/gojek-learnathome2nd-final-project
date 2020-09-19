@@ -25,3 +25,14 @@
 .goldenColor {
     color: #F5A623;
 }
+
+.ratingAvatar {
+    border-radius: 50%;
+    /* background-color: #F5A623; */
+    background-color: #F51464;
+    color: #fff !important;
+    font-size: 1em;
+    padding: 0.55rem 0.6rem 0.5rem 0.45rem;
+    max-width: 1rem;
+    margin-left: -1px !important;
+}
